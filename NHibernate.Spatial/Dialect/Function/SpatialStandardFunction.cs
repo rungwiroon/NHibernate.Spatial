@@ -85,7 +85,20 @@ namespace NHibernate.Spatial.Dialect.Function
         public virtual SqlString Render(IList args, ISessionFactoryImplementor factory)
         {
             SqlStringBuilder builder = new SqlStringBuilder();
-            builder.Add(name);
+
+            var sqlName = name;
+
+            switch (name)
+            {
+                default:
+                    sqlName = SpatialDialect.IsoPrefix + name;
+                    break;
+                case "GeometryType":
+                    sqlName = name;
+                    break;
+            }
+
+            builder.Add(sqlName);
             builder.Add("(");
             for (int i = 0; i < args.Count; i++)
             {

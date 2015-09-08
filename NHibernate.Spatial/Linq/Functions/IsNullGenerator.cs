@@ -9,20 +9,20 @@ using System.Reflection;
 
 namespace NHibernate.Spatial.Linq.Functions
 {
-    public class IsNullGenerator : BaseHqlGeneratorForMethod
-    {
-        public IsNullGenerator()
-        {
-            SupportedMethods = new[]
+	public class IsNullGenerator : BaseHqlGeneratorForMethod
+	{
+		public IsNullGenerator()
+		{
+			SupportedMethods = new[]
 			{
 				ReflectionHelper.GetMethodDefinition<IGeometry>(g => g.IsNull())
 			};
-        }
+		}
 
-        public override HqlTreeNode BuildHql(MethodInfo method, Expression targetObject, ReadOnlyCollection<Expression> arguments, HqlTreeBuilder treeBuilder, IHqlExpressionVisitor visitor)
-        {
-            var isNull = treeBuilder.IsNull(visitor.Visit(arguments[0]).AsExpression());
-            return isNull;
-        }
-    }
+		public override HqlTreeNode BuildHql(MethodInfo method, Expression targetObject, ReadOnlyCollection<Expression> arguments, HqlTreeBuilder treeBuilder, IHqlExpressionVisitor visitor)
+		{
+			var isNull = treeBuilder.IsNull(visitor.Visit(arguments[0]).AsExpression());
+			return isNull;
+		}
+	}
 }
