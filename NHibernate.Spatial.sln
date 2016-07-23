@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.Spatial", "NHibernate.Spatial\NHibernate.Spatial.csproj", "{50868B60-AC38-47E1-BD09-B4A4AA06B6F2}"
 EndProject
@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NHibernate.Spatial.My
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NHibernate.Spatial.PostGis20", "Tests.NHibernate.Spatial.PostGis20\Tests.NHibernate.Spatial.PostGis20.csproj", "{F3FA25B4-267D-4DC5-9685-E383BFA8E156}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWithNpgsql3", "TestWithNpgsql3\TestWithNpgsql3.csproj", "{39A083E1-7A2D-4C95-A58E-7B146F147CFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNHibernateWithNpgsql", "TestNHibernateWithNpgsql\TestNHibernateWithNpgsql.csproj", "{73225C6F-4926-4A1E-877A-B89D434DC17A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,10 +107,10 @@ Global
 		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73225C6F-4926-4A1E-877A-B89D434DC17A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73225C6F-4926-4A1E-877A-B89D434DC17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73225C6F-4926-4A1E-877A-B89D434DC17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73225C6F-4926-4A1E-877A-B89D434DC17A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

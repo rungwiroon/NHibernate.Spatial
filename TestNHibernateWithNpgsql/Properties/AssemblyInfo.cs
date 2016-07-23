@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestWithNpgsql3")]
+[assembly: AssemblyTitle("TestNHibernateWithNpgsql")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TestWithNpgsql3")]
+[assembly: AssemblyProduct("TestNHibernateWithNpgsql")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("39a083e1-7a2d-4c95-a58e-7b146f147cfd")]
+[assembly: Guid("73225c6f-4926-4a1e-877a-b89d434dc17a")]
 
 // Version information for an assembly consists of the following four values:
 //

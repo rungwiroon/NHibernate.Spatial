@@ -131,7 +131,7 @@ namespace NHibernate.Spatial.Type
 		/// <param name="owner">the containing entity</param>
 		/// <returns></returns>
 		/// <exception cref="T:NHibernate.HibernateException">HibernateException</exception>
-		public object NullSafeGet(IDataReader rs, string[] names, object owner)
+		public virtual object NullSafeGet(IDataReader rs, string[] names, object owner)
 		{
 			try
 			{

@@ -41,6 +41,7 @@ namespace NHibernate.Spatial.Dialect
         /// </summary>
         public PostGisDialect()
         {
+            RegisterKeyword("text");
             SpatialDialect.LastInstantiated = this;
             RegisterBasicFunctions();
             RegisterFunctions();

@@ -19,6 +19,8 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using System;
+using System.Data;
+using System.Linq;
 
 namespace NHibernate.Spatial.Type
 {
@@ -38,6 +40,30 @@ namespace NHibernate.Spatial.Type
             : base(NHibernateUtil.StringClob)
         {
         }
+
+        //public override object NullSafeGet(IDataReader rs, string[] names, object owner)
+        //{
+        //    int index = rs.GetOrdinal(names[0]);
+
+        //    if (rs.IsDBNull(index))
+        //    {
+        //        return null;
+        //    }
+
+        //    else
+        //    {
+        //        //var bytes = new byte[1000];
+        //        //var count = rs.GetBytes(index, 0, bytes, 0, 1000);
+
+        //        //var hexString = ToString(bytes.Take((int)count).ToArray());
+
+        //        //return hexString;
+
+        //        var value = rs.(index);
+
+        //        return value;
+        //    }
+        //}
 
         /// <summary>
         /// Converts from GeoAPI geometry type to database geometry type.
@@ -63,6 +89,7 @@ namespace NHibernate.Spatial.Type
 
             this.SetDefaultSRID(geometry);
             byte[] bytes = new PostGisWriter().Write(geometry);
+            //return bytes;
             return ToString(bytes);
         }
 
