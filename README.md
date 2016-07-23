@@ -5,28 +5,51 @@ The code has been updated to compile with the latest NTS, GeoAPI and NHibernate 
 
 ## Nuget Packages
 
-NuGet packages are currently in pre-release, but stable releases for NHibernate 4.0 are expected soon (december 2014). The packages listed below are compatible with NHibernate 4.0.2 GA.
+The packages listed below are compatible with NHibernate 4.0.4 GA.
 
-[Nhibernate.Spatial for Microsoft SQL Server](https://www.nuget.org/packages/NHibernate.Spatial.MsSql/) (Note! Assembly name has changed from MsSql2008 to MsSql)
+[Nhibernate.Spatial for Microsoft SQL Server](https://www.nuget.org/packages/NHibernate.Spatial.MsSql/)
 
 [Nhibernate.Spatial for MySQL](https://www.nuget.org/packages/NHibernate.Spatial.MySQL/)
-
+ 
 [Nhibernate.Spatial for PostGis](https://www.nuget.org/packages/NHibernate.Spatial.PostGis/)
 
 ## Getting Started
-For configuring your application, please refer to [Configuration and Mapping](http://nhforge.org/wikis/spatial/configuration-and-mapping.aspx) on the NHForge Wiki. 
-Furthermore you can read about [sample usage](http://nhforge.org/wikis/spatial/sample-usage.aspx). For an updated in-depth look at NHibernate.Spatial, you can 
+For configuring your application, please refer to [Configuration and Mapping](http://nhibernate.info/doc/spatial/configuration-and-mapping.html) on the NHForge Wiki. 
+Furthermore you can read about [sample usage](http://nhibernate.info/doc/spatial/sample-usage.html). For an updated in-depth look at NHibernate.Spatial, you can 
 read [this excellent blog post](http://build-failed.blogspot.no/2012/02/nhibernate-spatial-part-1.html) written by Pedro Sousa.
 
-For general NHibernate help, the NHibernate community website - <http://www.nhforge.org> - has a range of resources to help you get started with basic NHibernate,
+For general NHibernate help, the NHibernate community website - <http://nhibernate.info/> - has a range of resources to help you get started with basic NHibernate,
 including [wikis][NHWiki], [blogs][NHWiki] and [reference documentation][NH]. 
 
-## Request for Contributors ![Open Hub Stats](https://www.openhub.net/p/5599/widgets/project_partner_badge.gif)
-All contributors are welcome. We need help improving the current dialects, getting tests to pass, identifying and fixing bugs, and keeping the project going.
-Presently the Oracle Spatial dialect is excluded from the solution. The Oracle Dialect has never been functional, but with some work it could be. 
-Contributors who may be able to help out with this are especially welcome. 
+## Discussion Forum
+Discussion is made through the [NHibernate.Spatial Mailing List](https://groups.google.com/forum/#!forum/nhibernate-spatial). Feel free to join in with suggestions or thoughts!
 
+## Request for Contributors 
+All contributors are welcome. We need help improving the current dialects, getting tests to pass, identifying and fixing bugs, and keeping the project going.
+
+Credits
+-------
+
+Many thanks to the following individuals, organisations and projects whose work is so important to the success
+of NHibernate.Spatial (in no particular order):
+* [Nhibernate][] - Parent library
+* [NUnit][] - unit-testing
+* [GitHub][] and [SourceForge][] - source code hosting
+* [Log4net][] - logging, by the [Apache Software Foundation][]
+* [JetBrains][] - [ReSharper][] licences for NHibernate.Spatial developers
+* [NetTopologySuite][] and [GeoAPI.Net][] - Spatial Libraries
+
+[NUnit]: http://www.nunit.org
+[GitHub]: http://www.github.com
+[SourceForge]: http://www.sourceforge.net
+[Log4net]: http://logging.apache.org/log4net
+[Apache Software Foundation]: http://www.apache.org
+[JetBrains]: http://www.jetbrains.com
+[ReSharper]: http://www.jetbrains.com/resharper
+[GeoAPI.Net]: https://github.com/NetTopologySuite/GeoAPI
+[NetTopologySuite]: https://github.com/NetTopologySuite/NetTopologySuite
+[Nhibernate]: https://github.com/nhibernate/nhibernate-core
 [NHWiki]: http://nhforge.org/wikis
-[NHBlog]: http://nhforge.org/blogs/nhibernate
-[NH]: http://nhforge.org/doc/nh/en/index.html
+[NHBlog]: http://nhibernate.info/blog/
+[NH]: http://nhibernate.info/doc/nh/en/index.html
 [NHContrib]: http://sourceforge.net/projects/nhcontrib/

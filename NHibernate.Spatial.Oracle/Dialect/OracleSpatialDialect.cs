@@ -80,7 +80,7 @@ namespace NHibernate.Spatial.Dialect
             RegisterSpatialFunction(SpatialValidation.IsValid);
         }
 
-        private void RegisterFunctions()
+        protected override void RegisterFunctions()
         {
             RegisterConstantValue("TRUE", "1", NHibernateUtil.Boolean);
             RegisterConstantValue("FALSE", "0", NHibernateUtil.Boolean);
@@ -366,11 +366,11 @@ namespace NHibernate.Spatial.Dialect
             {
                 case SpatialRelation.Covers:
                     string[] patterns = new string[] {
-						"T*****FF*",
-						"*T****FF*",
-						"***T**FF*",
-						"****T*FF*",
-					};
+                        "T*****FF*",
+                        "*T****FF*",
+                        "***T**FF*",
+                        "****T*FF*",
+                    };
                     SqlStringBuilder builder = new SqlStringBuilder();
                     builder.Add("(CASE WHEN ");
                     for (int i = 0; i < patterns.Length; i++)
@@ -520,8 +520,9 @@ namespace NHibernate.Spatial.Dialect
         /// <param name="srid">The srid.</param>
         /// <param name="subtype">The subtype.</param>
         /// <param name="dimension">The dimension.</param>
+        /// <param name="isNullable">Whether or not the column is nullable.</param>
         /// <returns></returns>
-        public string GetSpatialCreateString(string schema, string table, string column, int srid, string subtype, int dimension)
+        public string GetSpatialCreateString(string schema, string table, string column, int srid, string subtype, int dimension, bool isNullable)
         {
             return null;
         }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.Spatial", "NHibernate.Spatial\NHibernate.Spatial.csproj", "{50868B60-AC38-47E1-BD09-B4A4AA06B6F2}"
 EndProject
@@ -39,10 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NHibernate.Spatial.MySQL57", "Tests.NHibernate.Spatial.MySQL57\Tests.NHibernate.Spatial.MySQL57.csproj", "{903F70BB-59E8-4752-BBC8-57C3C0CC221E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.NHibernate.Spatial.PostGis20", "Tests.NHibernate.Spatial.PostGis20\Tests.NHibernate.Spatial.PostGis20.csproj", "{F3FA25B4-267D-4DC5-9685-E383BFA8E156}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWithNpgsql3", "TestWithNpgsql3\TestWithNpgsql3.csproj", "{39A083E1-7A2D-4C95-A58E-7B146F147CFD}"
+EndProject
 Global
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = d0d9dda1-4edd-4406-bb6e-74047b3abf06
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -96,6 +99,18 @@ Global
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB5EFAB5-F90A-4B64-AB99-7C3A750154F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903F70BB-59E8-4752-BBC8-57C3C0CC221E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903F70BB-59E8-4752-BBC8-57C3C0CC221E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903F70BB-59E8-4752-BBC8-57C3C0CC221E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903F70BB-59E8-4752-BBC8-57C3C0CC221E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3FA25B4-267D-4DC5-9685-E383BFA8E156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A083E1-7A2D-4C95-A58E-7B146F147CFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

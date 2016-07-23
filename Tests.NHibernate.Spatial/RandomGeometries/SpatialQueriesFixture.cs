@@ -10,632 +10,632 @@ using Tests.NHibernate.Spatial.RandomGeometries.Model;
 
 namespace Tests.NHibernate.Spatial.RandomGeometries
 {
-	/// <summary>
-	/// Port of MAJAS Hibernate Spatial test suite.
-	/// </summary>
-	public abstract class SpatialQueriesFixture : AbstractFixture
-	{
-		private const string FilterString = "POLYGON((0.0 0.0, 25000.0 0.0, 25000.0 25000.0, 0.0 25000.0, 0.0 0.0))";
-		private IGeometry _filter;
+    /// <summary>
+    /// Port of MAJAS Hibernate Spatial test suite.
+    /// </summary>
+    public abstract class SpatialQueriesFixture : AbstractFixture
+    {
+        private const string FilterString = "POLYGON((0.0 0.0, 25000.0 0.0, 25000.0 25000.0, 0.0 25000.0, 0.0 0.0))";
+        private IGeometry _filter;
 
-		private ISession _session;
+        private ISession _session;
 
-		protected override Type[] Mappings
-		{
-			get
-			{
-				return new[]
-						   {
-							   typeof (LineStringEntity),
-							   typeof (MultiLineStringEntity),
-							   typeof (MultiPointEntity),
-							   typeof (MultiPolygonEntity),
-							   typeof (PointEntity),
-							   typeof (PolygonEntity),
-						   };
-			}
-		}
+        protected override Type[] Mappings
+        {
+            get
+            {
+                return new[]
+                           {
+                               typeof (LineStringEntity),
+                               typeof (MultiLineStringEntity),
+                               typeof (MultiPointEntity),
+                               typeof (MultiPolygonEntity),
+                               typeof (PointEntity),
+                               typeof (PolygonEntity),
+                           };
+            }
+        }
 
-		protected override bool CheckDatabaseWasCleanedOnTearDown
-		{
-			get { return false; }
-		}
+        protected override bool CheckDatabaseWasCleanedOnTearDown
+        {
+            get { return false; }
+        }
 
-		protected override void OnTestFixtureSetUp()
-		{
-			DataGenerator.Generate(sessions);
+        protected override void OnTestFixtureSetUp()
+        {
+            DataGenerator.Generate(sessions);
 
-			_filter = Wkt.Read(FilterString);
-			_filter.SRID = 4326;
-		}
+            _filter = Wkt.Read(FilterString);
+            _filter.SRID = 4326;
+        }
 
-		protected override void OnTestFixtureTearDown()
-		{
-			using (ISession session = sessions.OpenSession())
-			{
-				DeleteMappings(session);
-				session.Close();
-			}
-		}
+        protected override void OnTestFixtureTearDown()
+        {
+            using (ISession session = sessions.OpenSession())
+            {
+                DeleteMappings(session);
+                session.Close();
+            }
+        }
 
-		protected override void OnSetUp()
-		{
-			_session = sessions.OpenSession();
-		}
+        protected override void OnSetUp()
+        {
+            _session = sessions.OpenSession();
+        }
 
-		protected override void OnTearDown()
-		{
-			_session.Clear();
-			_session.Close();
-		}
+        protected override void OnTearDown()
+        {
+            _session.Clear();
+            _session.Close();
+        }
 
-		protected abstract string SqlLineStringFilter(string filterString);
+        protected abstract string SqlLineStringFilter(string filterString);
 
-		protected abstract string SqlPolygonFilter(string filterString);
+        protected abstract string SqlPolygonFilter(string filterString);
 
-		protected abstract string SqlMultiLineStringFilter(string filterString);
+        protected abstract string SqlMultiLineStringFilter(string filterString);
 
-		protected abstract string SqlOvelapsLineString(string filterString);
+        protected abstract string SqlOvelapsLineString(string filterString);
 
-		protected abstract string SqlIntersectsLineString(string filterString);
+        protected abstract string SqlIntersectsLineString(string filterString);
 
-		protected abstract ISQLQuery SqlIsEmptyLineString(ISession session);
+        protected abstract ISQLQuery SqlIsEmptyLineString(ISession session);
 
-		protected abstract ISQLQuery SqlIsSimpleLineString(ISession session);
+        protected abstract ISQLQuery SqlIsSimpleLineString(ISession session);
 
-		protected abstract ISQLQuery SqlAsBinaryLineString(ISession session);
+        protected abstract ISQLQuery SqlAsBinaryLineString(ISession session);
 
-		[Test]
-		public void LineStringFiltering()
-		{
-			IList results = _session.CreateCriteria(typeof(LineStringEntity))
-				.Add(SpatialRestrictions.Filter("Geometry", _filter))
-				.List();
+        [Test]
+        public void LineStringFiltering()
+        {
+            IList results = _session.CreateCriteria(typeof(LineStringEntity))
+                .Add(SpatialRestrictions.Filter("Geometry", _filter))
+                .List();
 
-			long count;
-			using (IDbCommand command = _session.Connection.CreateCommand())
-			{
-				command.CommandText = SqlLineStringFilter(FilterString);
-				count = (long)command.ExecuteScalar();
-			}
+            long count;
+            using (IDbCommand command = _session.Connection.CreateCommand())
+            {
+                command.CommandText = SqlLineStringFilter(FilterString);
+                count = (long)command.ExecuteScalar();
+            }
 
-			Assert.AreEqual(count, results.Count);
-		}
+            Assert.AreEqual(count, results.Count);
+        }
 
-		[Test]
-		public void PolygonFiltering()
-		{
-			IList results = _session.CreateCriteria(typeof(PolygonEntity))
-				.Add(SpatialRestrictions.Filter("Geometry", _filter))
-				.List();
+        [Test]
+        public void PolygonFiltering()
+        {
+            IList results = _session.CreateCriteria(typeof(PolygonEntity))
+                .Add(SpatialRestrictions.Filter("Geometry", _filter))
+                .List();
 
-			long count;
-			using (IDbCommand command = _session.Connection.CreateCommand())
-			{
-				command.CommandText = SqlPolygonFilter(FilterString);
-				count = (long)command.ExecuteScalar();
-			}
+            long count;
+            using (IDbCommand command = _session.Connection.CreateCommand())
+            {
+                command.CommandText = SqlPolygonFilter(FilterString);
+                count = (long)command.ExecuteScalar();
+            }
 
-			Assert.AreEqual(count, results.Count);
-		}
+            Assert.AreEqual(count, results.Count);
+        }
 
-		[Test]
-		public void MultiLineStringFiltering()
-		{
-			IList results = _session.CreateCriteria(typeof(MultiLineStringEntity))
-				.Add(SpatialRestrictions.Filter("Geometry", _filter))
-				.List();
+        [Test]
+        public void MultiLineStringFiltering()
+        {
+            IList results = _session.CreateCriteria(typeof(MultiLineStringEntity))
+                .Add(SpatialRestrictions.Filter("Geometry", _filter))
+                .List();
 
-			long count;
-			using (IDbCommand command = _session.Connection.CreateCommand())
-			{
-				command.CommandText = SqlMultiLineStringFilter(FilterString);
-				count = (long)command.ExecuteScalar();
-			}
+            long count;
+            using (IDbCommand command = _session.Connection.CreateCommand())
+            {
+                command.CommandText = SqlMultiLineStringFilter(FilterString);
+                count = (long)command.ExecuteScalar();
+            }
 
-			Assert.AreEqual(count, results.Count);
-		}
+            Assert.AreEqual(count, results.Count);
+        }
 
-		[Test]
-		public void HqlAsTextLineString()
-		{
-			IList results = _session
-				.CreateQuery("select NHSP.AsText(l.Geometry) from LineStringEntity as l")
-				.SetMaxResults(10)
-				.List();
-			foreach (string item in results)
-			{
-				Assert.IsNotNull(item);
-				Assert.AreNotEqual(string.Empty, item);
-			}
-		}
+        [Test]
+        public void HqlAsTextLineString()
+        {
+            IList results = _session
+                .CreateQuery("select NHSP.AsText(l.Geometry) from LineStringEntity as l")
+                .SetMaxResults(10)
+                .List();
+            foreach (string item in results)
+            {
+                Assert.IsNotNull(item);
+                Assert.AreNotEqual(string.Empty, item);
+            }
+        }
 
-		[Test]
-		public void HqlDimensionLineString()
-		{
-			IList results1 = _session
-				.CreateQuery("select NHSP.Dimension(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.SetMaxResults(10)
-				.List();
+        [Test]
+        public void HqlDimensionLineString()
+        {
+            IList results1 = _session
+                .CreateQuery("select NHSP.Dimension(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .SetMaxResults(10)
+                .List();
 
-			foreach (int dim in results1)
-			{
-				Assert.AreEqual(1, dim);
-			}
+            foreach (int dim in results1)
+            {
+                Assert.AreEqual(1, dim);
+            }
 
-			IList results2 = _session
-				.CreateQuery("select NHSP.Dimension(p.Geometry) from PolygonEntity as p where p.Geometry is not null")
-				.SetMaxResults(10)
-				.List();
+            IList results2 = _session
+                .CreateQuery("select NHSP.Dimension(p.Geometry) from PolygonEntity as p where p.Geometry is not null")
+                .SetMaxResults(10)
+                .List();
 
-			foreach (int dim in results2)
-			{
-				Assert.AreEqual(2, dim);
-			}
-		}
+            foreach (int dim in results2)
+            {
+                Assert.AreEqual(2, dim);
+            }
+        }
 
-		[Test]
-		public void HqlOverlapsLineString()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select NHSP.Overlaps(?,l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.List();
+        [Test]
+        public void HqlOverlapsLineString()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select NHSP.Overlaps(?,l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .List();
 
-			long countOverlapping = 0;
-			foreach (bool isOverlapped in results)
-			{
-				if (isOverlapped) countOverlapping++;
-			}
+            long countOverlapping = 0;
+            foreach (bool isOverlapped in results)
+            {
+                if (isOverlapped) countOverlapping++;
+            }
 
-			long count;
-			using (IDbCommand command = _session.Connection.CreateCommand())
-			{
-				command.CommandText = SqlOvelapsLineString(FilterString);
-				count = (long)command.ExecuteScalar();
-			}
+            long count;
+            using (IDbCommand command = _session.Connection.CreateCommand())
+            {
+                command.CommandText = SqlOvelapsLineString(FilterString);
+                count = (long)command.ExecuteScalar();
+            }
 
-			Assert.AreEqual(countOverlapping, count);
-		}
+            Assert.AreEqual(countOverlapping, count);
+        }
 
-		[Test]
-		public void HqlRelateLineString()
-		{
-			var count = _session
-				.CreateQuery(
-					"select count(*) from LineStringEntity l where l.Geometry is not null and NHSP.Relate(l.Geometry, ?, 'TT*******') = true")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.UniqueResult<long>();
+        [Test]
+        public virtual void HqlRelateLineString()
+        {
+            var count = _session
+                .CreateQuery(
+                    "select count(*) from LineStringEntity l where l.Geometry is not null and NHSP.Relate(l.Geometry, ?, 'TT*******') = true")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .UniqueResult<long>();
 
-			Assert.Greater((int)count, 0);
-		}
+            Assert.Greater((int)count, 0);
+        }
 
-		[Test]
-		public void HqlIntersectsLineString()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select NHSP.Intersects(?,l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.List();
+        [Test]
+        public void HqlIntersectsLineString()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select NHSP.Intersects(?,l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .List();
 
-			long intersects = 0;
-			foreach (bool b in results)
-			{
-				if (b) intersects++;
-			}
+            long intersects = 0;
+            foreach (bool b in results)
+            {
+                if (b) intersects++;
+            }
 
-			var altIntersects = _session
-				.CreateQuery("select count(*) from LineStringEntity as l where NHSP.Intersects(l.Geometry, ?) = true")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.UniqueResult<long>();
+            var altIntersects = _session
+                .CreateQuery("select count(*) from LineStringEntity as l where NHSP.Intersects(l.Geometry, ?) = true")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .UniqueResult<long>();
 
-			Assert.AreEqual(intersects, altIntersects);
+            Assert.AreEqual(intersects, altIntersects);
 
-			long count;
-			using (IDbCommand command = _session.Connection.CreateCommand())
-			{
-				command.CommandText = SqlIntersectsLineString(FilterString);
-				count = (long)command.ExecuteScalar();
-			}
+            long count;
+            using (IDbCommand command = _session.Connection.CreateCommand())
+            {
+                command.CommandText = SqlIntersectsLineString(FilterString);
+                count = (long)command.ExecuteScalar();
+            }
 
-			Assert.AreEqual(intersects, count);
+            Assert.AreEqual(intersects, count);
 
-			results = _session
-				.CreateQuery("from LineStringEntity as l where NHSP.Intersects(?,l.Geometry) = true")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.List();
+            results = _session
+                .CreateQuery("from LineStringEntity as l where NHSP.Intersects(?,l.Geometry) = true")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .List();
 
-			Assert.AreEqual(count, results.Count);
-		}
+            Assert.AreEqual(count, results.Count);
+        }
 
-		[Test]
-		public void HqlSRID()
-		{
-			IList results = _session
-				.CreateQuery("select NHSP.SRID(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.List();
+        [Test]
+        public void HqlSRID()
+        {
+            IList results = _session
+                .CreateQuery("select NHSP.SRID(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .List();
 
-			foreach (object item in results)
-			{
-				var srid = (int)item;
-				Assert.AreEqual(4326, srid);
-			}
-		}
+            foreach (object item in results)
+            {
+                var srid = (int)item;
+                Assert.AreEqual(4326, srid);
+            }
+        }
 
-		[Test]
-		public void HqlGeometryType()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select NHSP.GeometryType(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.List();
+        [Test]
+        public void HqlGeometryType()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select NHSP.GeometryType(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .List();
 
-			foreach (object item in results)
-			{
-				var gt = (string)item;
-				Assert.AreEqual("LINESTRING", gt.ToUpper());
-			}
+            foreach (object item in results)
+            {
+                var gt = (string)item;
+                Assert.AreEqual("LINESTRING", gt.ToUpper());
+            }
 
-			results = _session
-				.CreateQuery("select NHSP.GeometryType(p.Geometry) from PolygonEntity as p where p.Geometry is not null")
-				.List();
+            results = _session
+                .CreateQuery("select NHSP.GeometryType(p.Geometry) from PolygonEntity as p where p.Geometry is not null")
+                .List();
 
-			foreach (object item in results)
-			{
-				var gt = (string)item;
-				Assert.AreEqual("POLYGON", gt.ToUpper());
-			}
-		}
+            foreach (object item in results)
+            {
+                var gt = (string)item;
+                Assert.AreEqual("POLYGON", gt.ToUpper());
+            }
+        }
 
-		[Test]
-		public void HqlEnvelope()
-		{
-			HqlEnvelope("LineStringEntity");
-			HqlEnvelope("PolygonEntity");
-		}
+        [Test]
+        public void HqlEnvelope()
+        {
+            HqlEnvelope("LineStringEntity");
+            HqlEnvelope("PolygonEntity");
+        }
 
-		private void HqlEnvelope(string entityName)
-		{
-			IList results = _session
-				.CreateQuery("select NHSP.Envelope(e.Geometry), e.Geometry from "
-							 + entityName + " as e where e.Geometry is not null")
-				.SetMaxResults(10)
-				.List();
-			foreach (object[] item in results)
-			{
-				var env = (IGeometry)item[0];
-				var g = (IGeometry)item[1];
-				Assert.IsTrue(g.Envelope.Equals(env));
-			}
-		}
+        private void HqlEnvelope(string entityName)
+        {
+            IList results = _session
+                .CreateQuery("select NHSP.Envelope(e.Geometry), e.Geometry from "
+                             + entityName + " as e where e.Geometry is not null")
+                .SetMaxResults(10)
+                .List();
+            foreach (object[] item in results)
+            {
+                var env = (IGeometry)item[0];
+                var g = (IGeometry)item[1];
+                Assert.IsTrue(g.Envelope.Equals(env));
+            }
+        }
 
-		[Test]
-		public void HqlIsEmpty()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select l.Id, NHSP.IsEmpty(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.List();
+        [Test]
+        public void HqlIsEmpty()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select l.Id, NHSP.IsEmpty(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .List();
 
-			ISQLQuery query = SqlIsEmptyLineString(_session);
+            ISQLQuery query = SqlIsEmptyLineString(_session);
 
-			foreach (object[] item in results)
-			{
-				var id = (long)item[0];
-				var isEmpty = (bool)item[1];
-				query.SetInt64(0, id);
-				var expected = query.UniqueResult<bool>();
-				Assert.AreEqual(expected, isEmpty);
-			}
-		}
+            foreach (object[] item in results)
+            {
+                var id = (long)item[0];
+                var isEmpty = (bool)item[1];
+                query.SetInt64(0, id);
+                var expected = query.UniqueResult<bool>();
+                Assert.AreEqual(expected, isEmpty);
+            }
+        }
 
-		[Test]
-		public void HqlIsSimple()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select l.Id, NHSP.IsSimple(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.List();
+        [Test]
+        public void HqlIsSimple()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select l.Id, NHSP.IsSimple(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .List();
 
-			ISQLQuery query = SqlIsSimpleLineString(_session);
+            ISQLQuery query = SqlIsSimpleLineString(_session);
 
-			foreach (object[] item in results)
-			{
-				var id = (long)item[0];
-				var isSimple = (bool)item[1];
-				query.SetInt64(0, id);
-				var expected = query.UniqueResult<bool>();
-				Assert.AreEqual(expected, isSimple);
-			}
-		}
+            foreach (object[] item in results)
+            {
+                var id = (long)item[0];
+                var isSimple = (bool)item[1];
+                query.SetInt64(0, id);
+                var expected = query.UniqueResult<bool>();
+                Assert.AreEqual(expected, isSimple);
+            }
+        }
 
-		[Test]
-		public void HqlBoundary()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select p.Geometry, NHSP.Boundary(p.Geometry) from PolygonEntity as p where p.Geometry is not null")
-				.List();
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var bound = (IGeometry)item[1];
-				Assert.IsTrue(geom.Boundary.Equals(bound));
-			}
-		}
+        [Test]
+        public virtual void HqlBoundary()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select p.Geometry, NHSP.Boundary(p.Geometry) from PolygonEntity as p where p.Geometry is not null")
+                .List();
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var bound = (IGeometry)item[1];
+                Assert.IsTrue(geom.Boundary.Equals(bound));
+            }
+        }
 
-		[Test]
-		public void HqlAsBoundary()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select l.Id, NHSP.AsBinary(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
-				.List();
+        [Test]
+        public void HqlAsBoundary()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select l.Id, NHSP.AsBinary(l.Geometry) from LineStringEntity as l where l.Geometry is not null")
+                .List();
 
-			ISQLQuery query = SqlAsBinaryLineString(_session);
+            ISQLQuery query = SqlAsBinaryLineString(_session);
 
-			foreach (object[] item in results)
-			{
-				var id = (long)item[0];
-				var wkb = (byte[])item[1];
-				query.SetInt64(0, id);
-				var expected = query.UniqueResult<byte[]>();
-				Assert.AreEqual(expected, wkb);
-			}
-		}
+            foreach (object[] item in results)
+            {
+                var id = (long)item[0];
+                var wkb = (byte[])item[1];
+                query.SetInt64(0, id);
+                var expected = query.UniqueResult<byte[]>();
+                Assert.AreEqual(expected, wkb);
+            }
+        }
 
-		[Test]
-		public void HqlDistance()
-		{
-			IList results = _session
-				.CreateQuery(
-					@"
+        [Test]
+        public void HqlDistance()
+        {
+            IList results = _session
+                .CreateQuery(
+                    @"
 					select NHSP.Distance(l.Geometry, ?), l.Geometry
 					from LineStringEntity as l
 					where l.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.SetMaxResults(100)
-				.List();
-			foreach (object[] item in results)
-			{
-				var distance = (double)item[0];
-				var geom = (IGeometry)item[1];
-				Assert.AreEqual(geom.Distance(_filter), distance, 0.003);
-			}
-		}
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .SetMaxResults(100)
+                .List();
+            foreach (object[] item in results)
+            {
+                var distance = (double)item[0];
+                var geom = (IGeometry)item[1];
+                Assert.AreEqual(geom.Distance(_filter), distance, 0.003);
+            }
+        }
 
-		[Test]
-		public void HqlDistanceMin()
-		{
-			const int minDistance = 40000;
+        [Test]
+        public void HqlDistanceMin()
+        {
+            const int minDistance = 40000;
 
-			IList results = _session
-				.CreateQuery(
-					@"
+            IList results = _session
+                .CreateQuery(
+                    @"
 					select NHSP.Distance(l.Geometry, :filter), l.Geometry
 					from LineStringEntity as l
 					where l.Geometry is not null
 					and NHSP.Distance(l.Geometry, :filter) > :minDistance
 					order by NHSP.Distance(l.Geometry, :filter)")
-				.SetParameter("filter", _filter, SpatialDialect.GeometryTypeOf(_session))
-				.SetParameter("minDistance", minDistance)
-				.SetMaxResults(100)
-				.List();
+                .SetParameter("filter", _filter, SpatialDialect.GeometryTypeOf(_session))
+                .SetParameter("minDistance", minDistance)
+                .SetMaxResults(100)
+                .List();
 
-			Assert.IsNotEmpty(results);
-			foreach (object[] item in results)
-			{
-				var distance = (double)item[0];
-				Assert.Greater(distance, minDistance);
-				var geom = (IGeometry)item[1];
-				Assert.AreEqual(geom.Distance(_filter), distance, 0.003);
-			}
-		}
+            Assert.IsNotEmpty(results);
+            foreach (object[] item in results)
+            {
+                var distance = (double)item[0];
+                Assert.Greater(distance, minDistance);
+                var geom = (IGeometry)item[1];
+                Assert.AreEqual(geom.Distance(_filter), distance, 0.003);
+            }
+        }
 
-		[Test]
-		public void HqlBuffer()
-		{
-			const double distance = 10.0;
+        [Test]
+        public void HqlBuffer()
+        {
+            const double distance = 10.0;
 
-			IList results = _session
-				.CreateQuery(
-					"select p.Geometry, NHSP.Buffer(p.Geometry, ?) from PolygonEntity as p where p.Geometry is not null")
-				.SetDouble(0, distance)
-				.SetMaxResults(100)
-				.List();
+            IList results = _session
+                .CreateQuery(
+                    "select p.Geometry, NHSP.Buffer(p.Geometry, ?) from PolygonEntity as p where p.Geometry is not null")
+                .SetDouble(0, distance)
+                .SetMaxResults(100)
+                .List();
 
-			int count = 0;
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var buffer = (IGeometry)item[1];
-				IGeometry ntsBuffer = geom.Buffer(distance);
+            int count = 0;
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var buffer = (IGeometry)item[1];
+                IGeometry ntsBuffer = geom.Buffer(distance);
 
-				buffer.Normalize();
-				ntsBuffer.Normalize();
+                buffer.Normalize();
+                ntsBuffer.Normalize();
 
-				if (IsApproximateCoincident(ntsBuffer, buffer, 0.05))
-					count++;
-			}
-			Assert.Greater(count, 0);
-		}
+                if (IsApproximateCoincident(ntsBuffer, buffer, 0.05))
+                    count++;
+            }
+            Assert.Greater(count, 0);
+        }
 
-		[Test]
-		public void HqlConvexHull()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select m.Geometry, NHSP.ConvexHull(m.Geometry) from MultiLineStringEntity as m where m.Geometry is not null")
-				.SetMaxResults(100)
-				.List();
+        [Test]
+        public void HqlConvexHull()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select m.Geometry, NHSP.ConvexHull(m.Geometry) from MultiLineStringEntity as m where m.Geometry is not null")
+                .SetMaxResults(100)
+                .List();
 
-			int count = 0;
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var cvh = (IGeometry)item[1];
-				IGeometry ntsCvh = geom.ConvexHull();
+            int count = 0;
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var cvh = (IGeometry)item[1];
+                IGeometry ntsCvh = geom.ConvexHull();
 
-				Assert.IsTrue(cvh.Contains(geom));
+                Assert.IsTrue(cvh.Contains(geom));
 
-				cvh.Normalize();
-				ntsCvh.Normalize();
+                cvh.Normalize();
+                ntsCvh.Normalize();
 
-				if (ntsCvh.EqualsExact(cvh, 0.5))
-					count++;
-			}
-			Assert.Greater(count, 0);
-		}
+                if (ntsCvh.EqualsExact(cvh, 0.5))
+                    count++;
+            }
+            Assert.Greater(count, 0);
+        }
 
-		[Test]
-		public void HqlDifference()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select e.Geometry, NHSP.Difference(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.SetMaxResults(100)
-				.List();
+        [Test]
+        public void HqlDifference()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select e.Geometry, NHSP.Difference(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .SetMaxResults(100)
+                .List();
 
-			int count = 0;
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var diff = (IGeometry)item[1];
+            int count = 0;
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var diff = (IGeometry)item[1];
 
-				// some databases give a null object if the difference is the
-				// null-set
-				if (diff == null || diff.IsEmpty)
-				{
-					continue;
-				}
+                // some databases give a null object if the difference is the
+                // null-set
+                if (diff == null || diff.IsEmpty)
+                {
+                    continue;
+                }
 
-				diff.Normalize();
-				IGeometry ntsDiff = geom.Difference(_filter);
-				ntsDiff.Normalize();
+                diff.Normalize();
+                IGeometry ntsDiff = geom.Difference(_filter);
+                ntsDiff.Normalize();
 
-				if (ntsDiff.EqualsExact(diff, 0.5))
-					count++;
-			}
-			Assert.Greater(count, 0);
-		}
+                if (ntsDiff.EqualsExact(diff, 0.5))
+                    count++;
+            }
+            Assert.Greater(count, 0);
+        }
 
-		[Test]
-		public void HqlIntersection()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select e.Geometry, NHSP.Intersection(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.SetMaxResults(100)
-				.List();
+        [Test]
+        public void HqlIntersection()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select e.Geometry, NHSP.Intersection(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .SetMaxResults(100)
+                .List();
 
-			int count = 0;
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var intersect = (IGeometry)item[1];
+            int count = 0;
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var intersect = (IGeometry)item[1];
 
-				// some databases give a null object if the difference is the
-				// null-set
-				if (intersect == null || intersect.IsEmpty)
-				{
-					continue;
-				}
+                // some databases give a null object if the difference is the
+                // null-set
+                if (intersect == null || intersect.IsEmpty)
+                {
+                    continue;
+                }
 
-				intersect.Normalize();
-				IGeometry ntsIntersect = geom.Intersection(_filter);
-				ntsIntersect.Normalize();
+                intersect.Normalize();
+                IGeometry ntsIntersect = geom.Intersection(_filter);
+                ntsIntersect.Normalize();
 
-				if (ntsIntersect.EqualsExact(intersect, 0.5))
-					count++;
-			}
-			Assert.Greater(count, 0);
-		}
+                if (ntsIntersect.EqualsExact(intersect, 0.5))
+                    count++;
+            }
+            Assert.Greater(count, 0);
+        }
 
-		[Test]
-		public void HqlSymDifference()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select e.Geometry, NHSP.SymDifference(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.SetMaxResults(100)
-				.List();
+        [Test]
+        public void HqlSymDifference()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select e.Geometry, NHSP.SymDifference(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .SetMaxResults(100)
+                .List();
 
-			int count = 0;
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var symDiff = (IGeometry)item[1];
+            int count = 0;
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var symDiff = (IGeometry)item[1];
 
-				// some databases give a null object if the difference is the
-				// null-set
-				if (symDiff == null || symDiff.IsEmpty)
-				{
-					continue;
-				}
+                // some databases give a null object if the difference is the
+                // null-set
+                if (symDiff == null || symDiff.IsEmpty)
+                {
+                    continue;
+                }
 
-				symDiff.Normalize();
-				IGeometry ntsSymDiff = geom.SymmetricDifference(_filter);
-				ntsSymDiff.Normalize();
+                symDiff.Normalize();
+                IGeometry ntsSymDiff = geom.SymmetricDifference(_filter);
+                ntsSymDiff.Normalize();
 
-				if (ntsSymDiff.EqualsExact(symDiff, 0.5))
-					count++;
-			}
-			Assert.Greater(count, 0);
-		}
+                if (ntsSymDiff.EqualsExact(symDiff, 0.5))
+                    count++;
+            }
+            Assert.Greater(count, 0);
+        }
 
-		[Test]
-		public void HqlUnion()
-		{
-			IList results = _session
-				.CreateQuery(
-					"select e.Geometry, NHSP.Union(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
-				.SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
-				.SetMaxResults(100)
-				.List();
+        [Test]
+        public void HqlUnion()
+        {
+            IList results = _session
+                .CreateQuery(
+                    "select e.Geometry, NHSP.Union(e.Geometry, ?) from PolygonEntity as e where e.Geometry is not null")
+                .SetParameter(0, _filter, SpatialDialect.GeometryTypeOf(_session))
+                .SetMaxResults(100)
+                .List();
 
-			int count = 0;
-			foreach (object[] item in results)
-			{
-				var geom = (IGeometry)item[0];
-				var union = (IGeometry)item[1];
+            int count = 0;
+            foreach (object[] item in results)
+            {
+                var geom = (IGeometry)item[0];
+                var union = (IGeometry)item[1];
 
-				// some databases give a null object if the difference is the
-				// null-set
-				if (union == null || union.IsEmpty)
-				{
-					continue;
-				}
+                // some databases give a null object if the difference is the
+                // null-set
+                if (union == null || union.IsEmpty)
+                {
+                    continue;
+                }
 
-				union.Normalize();
-				IGeometry ntsUnion = geom.Union(_filter);
-				ntsUnion.Normalize();
+                union.Normalize();
+                IGeometry ntsUnion = geom.Union(_filter);
+                ntsUnion.Normalize();
 
-				if (ntsUnion.EqualsExact(union, 0.5))
-					count++;
-			}
-			Assert.Greater(count, 0);
-		}
+                if (ntsUnion.EqualsExact(union, 0.5))
+                    count++;
+            }
+            Assert.Greater(count, 0);
+        }
 
-		private static bool IsApproximateCoincident(IGeometry g1, IGeometry g2, double tolerance)
-		{
-			IGeometry symdiff;
-			if (g1.Dimension < Dimension.Surface && g2.Dimension < Dimension.Surface)
-			{
-				g1 = g1.Buffer(tolerance);
-				g2 = g2.Buffer(tolerance);
-				symdiff = g1.SymmetricDifference(g2).Buffer(tolerance);
-			}
-			else
-			{
-				symdiff = g1.SymmetricDifference(g2);
-			}
-			double relError = symdiff.Area / (g1.Area + g2.Area);
-			return relError < tolerance;
-		}
-	}
+        private static bool IsApproximateCoincident(IGeometry g1, IGeometry g2, double tolerance)
+        {
+            IGeometry symdiff;
+            if (g1.Dimension < Dimension.Surface && g2.Dimension < Dimension.Surface)
+            {
+                g1 = g1.Buffer(tolerance);
+                g2 = g2.Buffer(tolerance);
+                symdiff = g1.SymmetricDifference(g2).Buffer(tolerance);
+            }
+            else
+            {
+                symdiff = g1.SymmetricDifference(g2);
+            }
+            double relError = symdiff.Area / (g1.Area + g2.Area);
+            return relError < tolerance;
+        }
+    }
 }
