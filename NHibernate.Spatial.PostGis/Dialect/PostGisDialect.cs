@@ -15,6 +15,8 @@
 // along with NHibernate.Spatial; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NHibernate.Dialect;
 using NHibernate.Spatial.Dialect.Function;
 using NHibernate.Spatial.Metadata;
@@ -23,6 +25,9 @@ using NHibernate.SqlCommand;
 using NHibernate.Type;
 using NHibernate.Util;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace NHibernate.Spatial.Dialect
@@ -45,6 +50,47 @@ namespace NHibernate.Spatial.Dialect
             SpatialDialect.LastInstantiated = this;
             RegisterBasicFunctions();
             RegisterFunctions();
+            RegisterGeometryTypeForIPointUsingReflection();
+        }
+
+        static void RegisterGeometryTypeForIPointUsingReflection()
+        {
+            var methods =
+                typeof(TypeFactory).GetMethods(BindingFlags.NonPublic | BindingFlags.Static);
+
+            var requiredOverload = methods.Where(
+                x =>
+                {
+                    if (x.Name != "RegisterType") return false;
+
+                    var args = x.GetParameters();
+                    if (args.Length != 2) return false;
+
+                    return args[0].ParameterType == typeof(IType)
+                           && args[1].ParameterType == typeof(IEnumerable<string>);
+                })
+                .FirstOrDefault();
+
+            if (requiredOverload == null)
+            {
+                throw new NotSupportedException(
+                    "Could not find TypeFactory.RegisterType method overload in NHibernate. Please report this issue.");
+            }
+
+            requiredOverload.Invoke(
+                null,
+                new object[]
+                {
+                new CustomType(
+                    typeof(GeometryType),
+                    new Dictionary<string, string>
+                    {
+                        { "srid", "4326" },
+                        { "subtype", "POINT" }
+                    }),
+                new[]
+                { typeof(IPoint).AssemblyQualifiedName, typeof(Point).AssemblyQualifiedName }
+                });
         }
 
         public override string ToBooleanValueString(bool value)
@@ -323,7 +369,7 @@ namespace NHibernate.Spatial.Dialect
                         //.Add("::text")
                         .Add(", ")
                         .AddObject(anotherGeometry)
-                        .Add("::text")
+                        //.Add("::text")
                         .Add(")")
                         .ToSqlString();
             }
