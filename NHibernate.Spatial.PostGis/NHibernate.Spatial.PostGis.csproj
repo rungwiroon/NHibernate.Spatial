@@ -54,6 +54,10 @@
       <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net40-client\NetTopologySuite.IO.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NetTopologySuite.IO.GeoJSON, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NetTopologySuite.IO.GeoJSON.1.14\lib\net40-client\NetTopologySuite.IO.GeoJSON.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NetTopologySuite.IO.GeoTools, Version=1.14.0.0, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net40-client\NetTopologySuite.IO.GeoTools.dll</HintPath>
       <Private>True</Private>
@@ -72,6 +76,10 @@
     </Reference>
     <Reference Include="NetTopologySuite.IO.ShapeFile.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net40-client\NetTopologySuite.IO.ShapeFile.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -109,6 +117,7 @@
     <EmbeddedResource Include="Metadata\SpatialReferenceSystem.PostGisDialect.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

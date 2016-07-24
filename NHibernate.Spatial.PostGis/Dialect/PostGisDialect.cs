@@ -320,7 +320,7 @@ namespace NHibernate.Spatial.Dialect
                         .Add(relation.ToString())
                         .Add("(")
                         .AddObject(geometry)
-                        .Add("::text")
+                        //.Add("::text")
                         .Add(", ")
                         .AddObject(anotherGeometry)
                         .Add("::text")

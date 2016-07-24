@@ -152,7 +152,7 @@ namespace NHibernate.Spatial.Type
 		/// <param name="value">the object to write</param>
 		/// <param name="index">command parameter index</param>
 		/// <exception cref="T:NHibernate.HibernateException">HibernateException</exception>
-		public void NullSafeSet(IDbCommand cmd, object value, int index)
+		public virtual void NullSafeSet(IDbCommand cmd, object value, int index)
 		{
 			this.nullableType.NullSafeSet(cmd, this.FromGeometry(value), index);
 		}
