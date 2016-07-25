@@ -138,9 +138,9 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NHibernate.Spatial.PostGis\NHibernate.Spatial.PostGis.csproj">
-      <Project>{0dd11b24-d42e-4345-a770-0ce755e17c82}</Project>
-      <Name>NHibernate.Spatial.PostGis</Name>
+    <ProjectReference Include="..\NHibernate.Spatial.PostGis.Npgsql3\NHibernate.Spatial.PostGis.Npgsql3.csproj">
+      <Project>{f318c074-a49c-4335-9e51-cd84a3fcadca}</Project>
+      <Name>NHibernate.Spatial.PostGis.Npgsql3</Name>
     </ProjectReference>
     <ProjectReference Include="..\NHibernate.Spatial\NHibernate.Spatial.csproj">
       <Project>{50868b60-ac38-47e1-bd09-b4a4aa06b6f2}</Project>

@@ -33,53 +33,12 @@ namespace NHibernate.Spatial.Type
     [Serializable]
     public class PostGisGeometryType : GeometryTypeBase<string>
     {
-        private readonly string GeometryFromGeoJsonFunctionStart = "ST_GeomFromGeoJSON(";
-        private readonly string GeometryFromGeoJsonFunctionEnd = ")";
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PostGisGeometryType"/> class.
         /// </summary>
         public PostGisGeometryType()
             : base(NHibernateUtil.StringClob)
         {
-        }
-
-        //public override object NullSafeGet(IDataReader rs, string[] names, object owner)
-        //{
-        //    int index = rs.GetOrdinal(names[0]);
-
-        //    if (rs.IsDBNull(index))
-        //    {
-        //        return null;
-        //    }
-
-        //    else
-        //    {
-        //        //var bytes = new byte[1000];
-        //        //var count = rs.GetBytes(index, 0, bytes, 0, 1000);
-
-        //        //var hexString = ToString(bytes.Take((int)count).ToArray());
-
-        //        //return hexString;
-
-        //        var value = rs.(index);
-
-        //        return value;
-        //    }
-        //}
-
-        public override void NullSafeSet(IDbCommand cmd, object value, int index)
-        {
-            IDbDataParameter parameter = (IDbDataParameter)cmd.Parameters[index];
-
-            cmd.CommandText = cmd.CommandText.Replace(parameter.ParameterName, GeometryFromGeoJsonFunctionStart + parameter.ParameterName + GeometryFromGeoJsonFunctionEnd);
-
-            // set the parameter value before the size check, since ODBC changes the size automatically
-
-            parameter.Value = FromGeometry(value);
-
-            if (parameter.Size > 0 && ((string)value).Length > parameter.Size)
-                throw new HibernateException("The length of the string value exceeds the length configured in the mapping/parameter.");
         }
 
         /// <summary>
@@ -105,16 +64,8 @@ namespace NHibernate.Spatial.Type
             }
 
             this.SetDefaultSRID(geometry);
-            //byte[] bytes = new PostGisWriter().Write(geometry);
-            //return bytes;
-            //return ToString(bytes);
-
-            //return "ST_GeomFromText(" + geometry.AsText() + ", " + geometry.SRID + ")";
-            //return geometry.AsBinary();
-
-            var json = new GeoJsonWriter().Write(geometry);
-            //var text = GeometryFromGeoJsonFunctionStart + json + GeometryFromGeoJsonFunctionEnd;
-            return json;
+            byte[] bytes = new PostGisWriter().Write(geometry);
+            return ToString(bytes);
         }
 
         /// <summary>
@@ -146,21 +97,10 @@ namespace NHibernate.Spatial.Type
                 return new WKTReader().Read(wkt);
             }
 
-            //if(bytes.StartsWith(GeometryFromGeoJsonFunctionStart))
-            //{
-            //    bytes = bytes.Substring(GeometryFromGeoJsonFunctionStart.Length);
-            //    bytes = bytes.Substring(0, bytes.Length - GeometryFromGeoJsonFunctionEnd.Length);
-            //}
-
-            var geometry = new GeoJsonReader().Read<IGeometry>(bytes);
+            PostGisReader reader = new PostGisReader();
+            IGeometry geometry = reader.Read(ToByteArray(bytes));
+            this.SetDefaultSRID(geometry);
             return geometry;
-
-            //return new WKTReader().Read(bytes);
-
-            //PostGisReader reader = new PostGisReader();
-            //IGeometry geometry = reader.Read(ToByteArray(bytes));
-            //this.SetDefaultSRID(geometry);
-            //return geometry;
         }
 
         private static byte[] ToByteArray(string hex)

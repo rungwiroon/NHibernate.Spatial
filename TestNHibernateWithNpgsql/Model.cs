@@ -39,7 +39,7 @@ namespace TestNHibernateWithNpgsql
         {
             get
             {
-                return PointForWrite;
+                return PointForRead;
             }
 
             set
@@ -48,7 +48,7 @@ namespace TestNHibernateWithNpgsql
             }
         }
 
-        //public virtual IPoint PointForRead { get; set; }
+        public virtual IPoint PointForRead { get; set; }
 
         public virtual IPoint PointForWrite { get; set; }
 

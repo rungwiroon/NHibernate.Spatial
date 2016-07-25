@@ -46,51 +46,9 @@ namespace NHibernate.Spatial.Dialect
         /// </summary>
         public PostGisDialect()
         {
-            RegisterKeyword("text");
             SpatialDialect.LastInstantiated = this;
             RegisterBasicFunctions();
             RegisterFunctions();
-            RegisterGeometryTypeForIPointUsingReflection();
-        }
-
-        static void RegisterGeometryTypeForIPointUsingReflection()
-        {
-            var methods =
-                typeof(TypeFactory).GetMethods(BindingFlags.NonPublic | BindingFlags.Static);
-
-            var requiredOverload = methods.Where(
-                x =>
-                {
-                    if (x.Name != "RegisterType") return false;
-
-                    var args = x.GetParameters();
-                    if (args.Length != 2) return false;
-
-                    return args[0].ParameterType == typeof(IType)
-                           && args[1].ParameterType == typeof(IEnumerable<string>);
-                })
-                .FirstOrDefault();
-
-            if (requiredOverload == null)
-            {
-                throw new NotSupportedException(
-                    "Could not find TypeFactory.RegisterType method overload in NHibernate. Please report this issue.");
-            }
-
-            requiredOverload.Invoke(
-                null,
-                new object[]
-                {
-                new CustomType(
-                    typeof(GeometryType),
-                    new Dictionary<string, string>
-                    {
-                        { "srid", "4326" },
-                        { "subtype", "POINT" }
-                    }),
-                new[]
-                { typeof(IPoint).AssemblyQualifiedName, typeof(Point).AssemblyQualifiedName }
-                });
         }
 
         public override string ToBooleanValueString(bool value)
@@ -245,7 +203,7 @@ namespace NHibernate.Spatial.Dialect
         /// Gets the type of the geometry.
         /// </summary>
         /// <value>The type of the geometry.</value>
-        public IType GeometryType
+        public virtual IType GeometryType
         {
             get { return geometryType; }
         }
@@ -325,7 +283,7 @@ namespace NHibernate.Spatial.Dialect
                 .ToSqlString();
         }
 
-        public SqlString GetSpatialRelationString(object geometry, SpatialRelation relation, object anotherGeometry, bool criterion)
+        public virtual SqlString GetSpatialRelationString(object geometry, SpatialRelation relation, object anotherGeometry, bool criterion)
         {
             switch (relation)
             {
@@ -366,10 +324,10 @@ namespace NHibernate.Spatial.Dialect
                         .Add(relation.ToString())
                         .Add("(")
                         .AddObject(geometry)
-                        //.Add("::text")
+                        .Add("::text")
                         .Add(", ")
                         .AddObject(anotherGeometry)
-                        //.Add("::text")
+                        .Add("::text")
                         .Add(")")
                         .ToSqlString();
             }
@@ -424,7 +382,7 @@ namespace NHibernate.Spatial.Dialect
         /// <param name="analysis">The analysis.</param>
         /// <param name="extraArgument">The extra argument.</param>
         /// <returns></returns>
-        public SqlString GetSpatialAnalysisString(object geometry, SpatialAnalysis analysis, object extraArgument)
+        public virtual SqlString GetSpatialAnalysisString(object geometry, SpatialAnalysis analysis, object extraArgument)
         {
             switch (analysis)
             {

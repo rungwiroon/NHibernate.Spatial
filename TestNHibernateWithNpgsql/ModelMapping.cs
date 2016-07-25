@@ -27,7 +27,7 @@ namespace TestNHibernateWithNpgsql
                     cm.Name("point");
                 });
 
-                map.Type<NHibernate.Spatial.Type.PostGisGeometryType>();
+                map.Type<NHibernate.Spatial.Type.PostGisJsonGeometryType>();
             });
 
             Property(g => g.PointForRead, map =>
@@ -35,7 +35,7 @@ namespace TestNHibernateWithNpgsql
                 map.Formula("ST_AsGeoJSON(point, 10, 2)");
                 map.Generated(PropertyGeneration.Always);
 
-                map.Type<NHibernate.Spatial.Type.PostGisGeometryType>();
+                map.Type<NHibernate.Spatial.Type.GeometryType>();
             });
 
             Component(bd => bd.GpsData, bg =>
@@ -49,16 +49,16 @@ namespace TestNHibernateWithNpgsql
                         cm.Name("gps_point");
                     });
 
-                    map.Type<NHibernate.Spatial.Type.PostGisGeometryType>();
+                    map.Type<NHibernate.Spatial.Type.PostGisJsonGeometryType>();
                 });
 
-                //bg.Property(g => g.PointForRead, map =>
-                //{
-                //    map.Formula("cast(gps_point as text)");
-                //    map.Generated(PropertyGeneration.Always);
+                bg.Property(g => g.PointForRead, map =>
+                {
+                    map.Formula("ST_AsGeoJSON(point, 10, 2)");
+                    map.Generated(PropertyGeneration.Always);
 
-                //    map.Type<NHibernate.Spatial.Type.PostGisGeometryType>();
-                //});
+                    map.Type<NHibernate.Spatial.Type.GeometryType>();
+                });
 
                 bg.Property(g => g.Heading, map => map.Column("gps_heading"));
                 bg.Property(g => g.Speed, map => map.Column("gps_speed"));
