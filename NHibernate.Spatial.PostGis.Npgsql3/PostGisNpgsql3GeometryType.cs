@@ -18,6 +18,7 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NpgsqlTypes;
 using System;
 using System.Data;
 using System.Linq;
@@ -33,22 +34,54 @@ namespace NHibernate.Spatial.Type
     [Serializable]
     public class PostGisNpgsql3GeometryType : PostGisGeometryType
     {
-        //public override object NullSafeGet(IDataReader rs, string[] names, object owner)
-        //{
-        //    int index = rs.GetOrdinal(names[0]);
+        public override object NullSafeGet(IDataReader rs, string[] names, object owner)
+        {
+            int index = rs.GetOrdinal(names[0]);
 
-        //    if (rs.IsDBNull(index))
-        //    {
-        //        return null;
-        //    }
+            if (rs.IsDBNull(index))
+            {
+                return null;
+            }
 
-        //    else
-        //    {
-        //        var value = rs.GetValue(index);
+            else
+            {
+                var value = rs.GetValue(index);
 
-        //        return value;
-        //    }
-        //}
+                if(value is PostgisPoint)
+                {
+                    return ConvertToPoint((PostgisPoint)value);
+                }
+
+                else if(value is PostgisLineString)
+                {
+                    return ConvertToLineString((PostgisLineString)value);
+                }
+
+                else if(value is PostgisPolygon)
+                {
+                    return ConvertToPolygon((PostgisPolygon)value);
+                }
+
+                return value;
+            }
+        }
+
+        public Point ConvertToPoint(PostgisPoint point)
+        {
+            var newPoint = new Point(point.X, point.Y);
+            newPoint.SRID = (int)point.SRID;
+            return newPoint;
+        }
+
+        public LineString ConvertToLineString(PostgisLineString lineString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Polygon ConvertToPolygon(PostgisPolygon polygon)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void NullSafeSet(IDbCommand cmd, object value, int index)
         {

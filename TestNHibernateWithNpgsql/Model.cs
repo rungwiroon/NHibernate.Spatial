@@ -11,22 +11,7 @@ namespace TestNHibernateWithNpgsql
     {
         public virtual long Id { get; set; }
 
-        //public virtual IPoint Point
-        //{
-        //    get
-        //    {
-        //        return PointForWrite;
-        //    }
-
-        //    set
-        //    {
-        //        PointForWrite = value;
-        //    }
-        //}
-
-        public virtual IPoint PointForWrite { get; set; }
-
-        public virtual IPoint PointForRead { get; set; }
+        public virtual IPoint Point { get; set; }
 
         public virtual GpsData GpsData { get; set; }
     }
@@ -35,22 +20,7 @@ namespace TestNHibernateWithNpgsql
     {
         public virtual DateTime DateTime { get; set; }
 
-        public virtual IPoint Point
-        {
-            get
-            {
-                return PointForRead;
-            }
-
-            set
-            {
-                PointForWrite = value;
-            }
-        }
-
-        public virtual IPoint PointForRead { get; set; }
-
-        public virtual IPoint PointForWrite { get; set; }
+        public virtual IPoint Point { get; set; }
 
         public virtual int Heading { get; set; }
 

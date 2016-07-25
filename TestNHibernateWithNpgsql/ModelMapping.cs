@@ -20,7 +20,7 @@ namespace TestNHibernateWithNpgsql
                 map.Generator(Generators.Assigned);
             });
 
-            Property(g => g.PointForWrite, map =>
+            Property(g => g.Point, map =>
             {
                 map.Column(cm =>
                 {
@@ -34,19 +34,11 @@ namespace TestNHibernateWithNpgsql
                 });
             });
 
-            Property(g => g.PointForRead, map =>
-            {
-                map.Formula("cast(point as text)");
-                map.Generated(PropertyGeneration.Always);
-
-                map.Type<NHibernate.Spatial.Type.GeometryType>();
-            });
-
             Component(bd => bd.GpsData, bg =>
             {
                 bg.Property(g => g.DateTime, map => map.Column("gps_date_time"));
 
-                bg.Property(g => g.PointForWrite, map =>
+                bg.Property(g => g.Point, map =>
                 {
                     map.Column(cm =>
                     {
@@ -54,14 +46,6 @@ namespace TestNHibernateWithNpgsql
                     });
 
                     map.Type<NHibernate.Spatial.Type.PostGisNpgsql3GeometryType>();
-                });
-
-                bg.Property(g => g.PointForRead, map =>
-                {
-                    map.Formula("cast(gps_point as text)");
-                    map.Generated(PropertyGeneration.Always);
-
-                    map.Type<NHibernate.Spatial.Type.GeometryType>();
                 });
 
                 bg.Property(g => g.Heading, map => map.Column("gps_heading"));

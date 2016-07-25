@@ -24,7 +24,6 @@ namespace NHibernate.Spatial.Dialect
         public PostGis20DialectNpgsql3()
             : base()
         {
-            RegisterKeyword("text");
             RegisterGeometryTypeForIPointUsingReflection();
         }
 
