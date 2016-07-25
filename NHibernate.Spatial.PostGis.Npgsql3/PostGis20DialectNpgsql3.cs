@@ -14,7 +14,7 @@ namespace NHibernate.Spatial.Dialect
 {
     public class PostGis20DialectNpgsql3 : PostGis20Dialect
     {
-        private static readonly IType geometryType = new CustomType(typeof(PostGisJsonGeometryType), null);
+        private static readonly IType geometryType = new CustomType(typeof(PostGisNpgsql3GeometryType), null);
 
         public override IType GeometryType
         {
@@ -57,7 +57,7 @@ namespace NHibernate.Spatial.Dialect
                 new object[]
                 {
                 new CustomType(
-                    typeof(PostGisJsonGeometryType),
+                    typeof(PostGisNpgsql3GeometryType),
                     new Dictionary<string, string>
                     {
                         { "srid", "4326" },
